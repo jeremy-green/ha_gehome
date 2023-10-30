@@ -276,8 +276,11 @@ class GeHomeUpdateCoordinator(DataUpdateCoordinator):
 
         for entity in api.entities:
             if entity.enabled:
-                _LOGGER.debug(f"Updating {entity} ({entity.unique_id}, {entity.entity_id})")
-                entity.async_write_ha_state()
+                try:
+                    _LOGGER.debug(f"Refreshing state for {entity} ({entity.unique_id}, {entity.entity_id}")
+                    entity.async_write_ha_state()
+                except:
+                    _LOGGER.debug(f"Could not refresh state for {entity} ({entity.unique_id}, {entity.entity_id}")
 
     async def _refresh_ha_state(self):
         entities = [
